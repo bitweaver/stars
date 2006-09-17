@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.1 2006/09/14 05:58:52 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.2 2006/09/17 08:42:07 squareing Exp $
 * @date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.1 $ $Date: 2006/09/14 05:58:52 $
+* @version $Revision: 1.2 $ $Date: 2006/09/17 08:42:07 $
 * @class LibertyStars
 */
 
@@ -109,21 +109,6 @@ class LibertyStars extends LibertyBase {
 	}
 
 	/**
-	 * get the current version number of the specified liberty content
-	 *
-	 * @param $pContentId content ID
-	 * @access public
-	 * @return version number of specified content
-	 **/
-	function getContentVersion( $pContentId ) {
-		$query = "
-			SELECT MAX( `version` )
-			FROM `".BIT_DB_PREFIX."liberty_content`
-			WHERE `content_id`=?";
-		return( $this->mDb->getOne( $query, array( $this->mContentId ) ) );
-	}
-
-	/**
 	 * Get the rating history of a loaded content
 	 * 
 	 * @param boolean $pExtras loading the extras will get all users who have rated in the past and their ratings
@@ -163,19 +148,27 @@ class LibertyStars extends LibertyBase {
 	 * @return usable hash with a summary of ratings of a given content id
 	 */
 	function getRatingSummary( $pContentId = NULL ) {
-		$ret = FALSE;
 		if( !@BitBase::verifyId( $pContentId ) && $this->isValid() ) {
 			$pContentId = $this->mContentId;
 		}
 
+		$ret['sum'] = $ret['weight'] = $ret['count'] = 0;
 		if( @BitBase::verifyId( $pContentId ) ) {
 			$query = "
-				SELECT sth.`rating`, COUNT( sth.`rating`) AS `update_count`, SUM( sth.`weight` ) AS `weight`
-				FROM `".BIT_DB_PREFIX."stars` sts
-					LEFT JOIN `".BIT_DB_PREFIX."stars_history` sth ON( sth.`content_id`=sts.`content_id` )
-				WHERE sts.`content_id`=?
+				SELECT
+					sth.`rating`,
+					COUNT( sth.`rating`) AS `update_count`,
+					SUM( sth.`weight` ) AS `weight`
+				FROM `".BIT_DB_PREFIX."stars_history` sth
+				WHERE sth.`content_id`=?
 				GROUP BY sth.`rating`";
-			$ret = $this->mDb->getAll( $query, array( $pContentId ) );
+			$result = $this->mDb->getAll( $query, array( $pContentId ) );
+
+			foreach( $result as $set ) {
+				$ret['sum']    += $set['weight'] * $set['rating'];
+				$ret['weight'] += $set['weight'];
+				$ret['count']  += $set['update_count'];
+			}
 		}
 		return $ret;
 	}
@@ -226,8 +219,8 @@ class LibertyStars extends LibertyBase {
 			// only store stuff if user hasn't rated this content before
 			if( $this->calculateRating( $pParamHash ) ) {
 				// stars table
-				$pParamHash['stars_store']['rating']              = ( int )$pParamHash['calc']['rating'];
-				$pParamHash['stars_store']['update_count']        = ( int )$pParamHash['calc']['count'] + 1;
+				$pParamHash['stars_store']['rating']              = ( int )$pParamHash['summary']['rating'];
+				$pParamHash['stars_store']['update_count']        = ( int )$pParamHash['summary']['count'] + 1;
 
 				// keep this entry in the history
 				$pParamHash['stars_history_store']['content_id']  = $pParamHash['stars_store']['content_id'] = ( int )$this->mContentId;
@@ -310,40 +303,45 @@ class LibertyStars extends LibertyBase {
 	function reCalculateRating() {
 		global $gBitSystem;
 
-		// get entire rating history
-		$result = $this->mDb->query( "SELECT * FROM `".BIT_DB_PREFIX."stars_history`" );
+		// get all users that have rated and the content that has been rated
+		$result = $this->mDb->query( "SELECT `user_id`, `content_id` FROM `".BIT_DB_PREFIX."stars_history`" );
 		while( $aux = $result->fetchRow() ) {
-			$userIds[] = $aux['user_id'];
+			$userIds[]    = $aux['user_id'];
 			$contentIds[] = $aux['content_id'];
 		}
-		$userIds = array_unique( $userIds );
+		$userIds    = array_unique( $userIds );
 		$contentIds = array_unique( $contentIds );
 
+		// --- Update user weighting first
 		// update user weight in accordance with new settings
 		foreach( $userIds as $userId ) {
 			$userWeight = $this->calculateUserWeight( $userId );
 			$result = $this->mDb->query( "UPDATE `".BIT_DB_PREFIX."stars_history` SET `weight`=? WHERE `user_id`=?", array( $userWeight, $userId ) );
 		}
 
+		// --- Update content rating
+		// remove all entries in the aggregated list
+		$result = $this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."stars`" );
+
 		// update the calculations in the stars table
 		foreach( $contentIds as $content_id ) {
-			$calc['sum'] = $calc['weight'] = $calc['count'] = 0;
-			if( $summary = $this->getRatingSummary( $content_id ) ) {
-				foreach( $summary as $info ) {
-					$calc['sum']    += $info['weight'] * $info['rating'];
-					$calc['weight'] += $info['weight'];
-					$calc['count']  += $info['update_count'];
-				}
-			}
+			// get the rating history summary
+			$summary = $this->getRatingSummary( $content_id );
 
+			// set the aggregated rating to 0 if we aren't displaying the rating yet.
 			$minRatings = $gBitSystem->getConfig( 'stars_minimum_ratings', 5 );
-			if( $calc['count'] < $minRatings ) {
+			if( $summary['count'] < $minRatings ) {
 				$rating = 0;
 			} else {
-				$rating = round( $calc['sum'] / $calc['weight'] );
+				$rating = round( $summary['sum'] / $summary['weight'] );
 			}
 
-			$result = $this->mDb->query( "UPDATE `".BIT_DB_PREFIX."stars` SET `rating`=?, `update_count`=? WHERE `content_id`=?", array( $rating, $calc['count'], $content_id ) );
+			$storeHash = array(
+				'content_id'   => $content_id,
+				'rating'       => $rating,
+				'update_count' => $summary['count'],
+			);
+			$result = $this->mDb->associateInsert( BIT_DB_PREFIX."stars", $storeHash );
 		}
 		return TRUE;
 	}
@@ -376,23 +374,17 @@ class LibertyStars extends LibertyBase {
 			}
 
 			$pParamHash['user']['weight'] = $this->calculateUserWeight();
-			$calc['sum'] = $calc['weight'] = $calc['count'] = 0;
-			// the user rating has to be updated before we get the summary
-			if( $summary = $this->getRatingSummary() ) {
-				foreach( $summary as $info ) {
-					$calc['sum']    += $info['weight'] * $info['rating'];
-					$calc['weight'] += $info['weight'];
-					$calc['count']  += $info['update_count'];
-				}
-			}
+
+			// get the rating history summary
+			$summary = $this->getRatingSummary();
 
 			$minRatings = $gBitSystem->getConfig( 'stars_minimum_ratings', 5 );
-			if( ( $calc['count'] + 1 ) < $minRatings ) {
-				$pParamHash['calc']['rating'] = 0;
+			if( ( $summary['count'] + 1 ) < $minRatings ) {
+				$pParamHash['summary']['rating'] = 0;
 			} else {
-				$pParamHash['calc']['rating'] = round( ( $calc['sum'] + ( $pParamHash['rating'] * $pParamHash['user']['weight'] ) ) / ( $calc['weight'] + $pParamHash['user']['weight'] ) );
+				$pParamHash['summary']['rating'] = round( ( $summary['sum'] + ( $pParamHash['rating'] * $pParamHash['user']['weight'] ) ) / ( $summary['weight'] + $pParamHash['user']['weight'] ) );
 			}
-			$pParamHash['calc']['count'] = $calc['count'];
+			$pParamHash['summary']['count'] = $summary['count'];
 			$ret = TRUE;
 		}
 		return $ret;
