@@ -1,3 +1,4 @@
+{strip}
 {assign var=stars value=$gBitSystem->getConfig('stars_used_in_display',5)}
 {assign var=icon_width value=$gBitSystem->getConfig('stars_icon_width',22)}
 {assign var=icon_height value=$gBitSystem->getConfig('stars_icon_height',22)}
@@ -12,3 +13,4 @@
 .stars-rating a.stars-{$rate}:hover	{ldelim}width:{$rate*$icon_width}px;{rdelim}
 {/section}
 .stars-rating .stars-current	{ldelim}background:url( {biticon ipackage=stars iname=stars url=true} ) left bottom; position:absolute; height:{$icon_height}px; display:block; text-indent:-9000px; z-index:1;{rdelim}
+{/strip}
