@@ -1,14 +1,22 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.2 2006/09/17 08:42:07 squareing Exp $
-* @date created 2006/02/10
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.3 2006/10/13 12:46:44 lsces Exp $
+* date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.2 $ $Date: 2006/09/17 08:42:07 $
-* @class LibertyStars
+* @version $Revision: 1.3 $ $Date: 2006/10/13 12:46:44 $
+* @package stars
 */
 
+/**
+ * Setup
+ */
 require_once( KERNEL_PKG_PATH.'BitBase.php' );
 
+/**
+ * Liberty Stars
+ * 
+ * @package stars
+ */
 class LibertyStars extends LibertyBase {
 	var $mContentId;
 

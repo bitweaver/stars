@@ -1,7 +1,19 @@
 <?php
+/**
+* $Header: /cvsroot/bitweaver/_bit_stars/rate.php,v 1.2 2006/10/13 12:46:44 lsces Exp $
+* date created 2006/02/10
+* @author xing <xing@synapse.plus.com>
+* @version $Revision: 1.2 $ $Date: 2006/10/13 12:46:44 $
+* @package stars
+*/
+
+/**
+ * Setup
+ */
 require_once( "../bit_setup_inc.php" );
 $gBitSystem->verifyPackage( 'stars' );
 $starsfeed = array();
+
 if( @BitBase::verifyId( $_REQUEST['content_id'] ) && @BitBase::verifyId( $_REQUEST['stars_rating'] ) ) {
 	if( $tmpObject = LibertyBase::getLibertyObject( $_REQUEST['content_id'] ) ) {
 		// check if this feature allows rating
