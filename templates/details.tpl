@@ -50,17 +50,13 @@
 			<div class="row">
 				{formlabel label="Users who have rated"}
 				{forminput}
-					{if $smarty.request.show_raters}
-						<ul class="data">
-							{foreach from=$starsDetails.user_ratings item=user}
-								<li class="item {cycle values="odd,even"}">
-									{displayname hash=$user} <small>({tr}weighting{/tr}: {$user.weight})</small> &bull; {$user.rating} / 100
-								</li>
-							{/foreach}
-						</ul>
-					{else}
-						{smartlink ititle="Show users who have rated" show_raters=1 content_id=$starsDetails.content_id}
-					{/if}
+					<ul class="data">
+						{foreach from=$starsDetails.user_ratings item=user}
+							<li class="item {cycle values="odd,even"}">
+								{displayname hash=$user} <small>({tr}weighting{/tr}: {$user.weight})</small> &bull; {$user.rating} / 100
+							</li>
+						{/foreach}
+					</ul>
 				{/forminput}
 			</div>
 		{/legend}
