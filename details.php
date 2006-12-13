@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/details.php,v 1.3 2006/12/11 14:47:09 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/details.php,v 1.4 2006/12/13 18:15:07 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.3 $ $Date: 2006/12/11 14:47:09 $
+* @version $Revision: 1.4 $ $Date: 2006/12/13 18:15:07 $
 * @package stars
 */
 
@@ -20,8 +20,7 @@ if( !@BitBase::verifyId( $_REQUEST['content_id'] ) ) {
 }
 
 $stars = new LibertyStars( $_REQUEST['content_id'] );
-//$stars->getRatingDetails( !empty( $_REQUEST['show_raters'] ) );
-$stars->getRatingDetails( TRUE );
+$stars->loadRatingDetails();
 
 $gBitSmarty->assign( 'starsDetails', $stars->mInfo );
 $gBitSystem->display( 'bitpackage:stars/details.tpl', tra( 'Details of Rated Content' ) );

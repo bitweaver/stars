@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.3 2006/10/13 12:46:44 lsces Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.4 2006/12/13 18:15:07 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.3 $ $Date: 2006/10/13 12:46:44 $
+* @version $Revision: 1.4 $ $Date: 2006/12/13 18:15:07 $
 * @package stars
 */
 
@@ -123,7 +123,7 @@ class LibertyStars extends LibertyBase {
 	 * @access public
 	 * @return TRUE on success, FALSE on failure
 	 */
-	function getRatingDetails( $pExtras = FALSE ) {
+	function loadRatingDetails() {
 		if( $this->isValid() ) {
 			global $gBitSystem;
 			$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
@@ -135,15 +135,13 @@ class LibertyStars extends LibertyBase {
 			$obj = $this->getLibertyObject( $this->mContentId );
 			$this->mInfo = $this->mDb->getRow( $query, array( $this->mContentId ) );
 			$this->mInfo = array_merge( $this->mInfo, $obj->mInfo );
-			if( $pExtras ) {
-				$query = "
-					SELECT sth.`content_id` as `hash_key`, sth.*, uu.`login`, uu.`real_name`
-					FROM `".BIT_DB_PREFIX."stars_history` sth
-						INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON sth.`user_id`=uu.`user_id`
-					WHERE sth.`content_id`=?
-					ORDER BY sth.`rating` ASC";
-				$this->mInfo['user_ratings'] = $this->mDb->getAll( $query, array( $this->mContentId ) );
-			}
+			$query = "
+				SELECT sth.`content_id` as `hash_key`, sth.*, uu.`login`, uu.`real_name`
+				FROM `".BIT_DB_PREFIX."stars_history` sth
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON sth.`user_id`=uu.`user_id`
+				WHERE sth.`content_id`=?
+				ORDER BY sth.`rating` ASC";
+			$this->mInfo['user_ratings'] = $this->mDb->getAll( $query, array( $this->mContentId ) );
 		}
 		return( count( $this->mInfo ) );
 	}
@@ -497,6 +495,11 @@ function stars_template_setup( $pStars ) {
 function stars_content_list_sql( &$pObject ) {
 	global $gBitSystem, $gBitUser, $gBitSmarty;
 	if( $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
+		// in some cases, such as articles, rating is allowed when getList is called.
+		// TODO: only load this when needed?
+		if( $gBitSystem->isFeatureActive( 'stars_use_ajax' ) ) {
+			$gBitSmarty->assign( 'loadAjax', TRUE );
+		}
 		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
 		stars_template_setup( $stars );
