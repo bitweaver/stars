@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.4 2006/12/13 18:15:07 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.5 2006/12/15 20:38:25 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.4 $ $Date: 2006/12/13 18:15:07 $
+* @version $Revision: 1.5 $ $Date: 2006/12/15 20:38:25 $
 * @package stars
 */
 
@@ -476,7 +476,7 @@ function stars_template_setup( $pStars ) {
 	global $gBitSystem, $gBitUser, $gBitSmarty;
 	$default_names = array();
 	for( $i = 0; $i < $pStars; $i++ ) {
-		$default_names[] = tra( "Rating" ).": ".( $i+1 );
+		$default_names[] = ( $i+1 )." / ".$gBitSystem->getConfig( 'stars_used_in_display' );
 	}
 	$default_names_flat = implode( ",", $default_names );
 	$ratingNames = explode( ",", "," . $gBitSystem->getConfig( 'stars_rating_names', $default_names_flat ) );
