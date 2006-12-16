@@ -12,11 +12,11 @@
 				{tr}Waiting for {$gBitSystem->getConfig('stars_minimum_ratings',5)} ratings{/tr}
 			{/if}
 			{assign var=userRating value=$serviceHash.stars_user_rating}
-			{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating:{/tr} {$ratingNames.$userRating}{/if}
+			{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$ratingNames.$userRating}{/if}
 		</div>
 
 		<ul class="stars-rating">
-			<li class="stars-current" style="width:{$serviceHash.stars_pixels|default:0}px;">{if $serviceHash.stars_user_pixels}{tr}Your rating:{/tr} {$serviceHash.stars_user_rating} / {$gBitSystem->getConfig('stars_used_in_display')}{else}{tr}Rate{/tr}{/if}</li>
+			<li class="stars-current" style="width:{$serviceHash.stars_pixels|default:0}px;">{if $serviceHash.stars_user_pixels}{tr}Your rating{/tr}: {$serviceHash.stars_user_rating} / {$gBitSystem->getConfig('stars_used_in_display')}{else}{tr}Rate{/tr}{/if}</li>
 			{if !$serviceHash.stars_user_rating || $gBitSystem->isFeatureActive( "stars_rerating" )}
 				{foreach from=$starsLinks item=k key=rate}
 					{assign var=rname value=$ratingNames.$rate}
