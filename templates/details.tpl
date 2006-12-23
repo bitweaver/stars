@@ -8,7 +8,7 @@
 			<div class="row">
 				{formlabel label="Title"}
 				{forminput}
-					<a href="{$starsDetails.display_url}">{$starsDetails.title}</a> <small>({$starsDetails.content_type.content_description})</small>
+				<a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$starsDetails.content_id}">{$starsDetails.title}</a> <small>({$starsDetails.content_type.content_description})</small>
 				{/forminput}
 			</div>
 
