@@ -6,7 +6,7 @@
 	{/if}
 	<div class="stars-container" id="stars-{$serviceHash.content_id}">
 		{if $type != 'mini'}
-			<div id="{$divid}" class="small">
+			{capture name=starsText}
 				{if $serviceHash.stars_rating}
 					{math equation="rating * stars / 100" stars=$gBitSystem->getConfig('stars_used_in_display') rating=$serviceHash.stars_rating format="%.1f"} / {$gBitSystem->getConfig('stars_used_in_display')} {tr}in {$serviceHash.stars_update_count} votes{/tr}
 				{else}
@@ -14,6 +14,9 @@
 				{/if}
 				{assign var=userRating value=$serviceHash.stars_user_rating}
 				{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$ratingNames.$userRating}{/if}
+			{/capture}
+			<div id="{$divid}" class="small">
+				{$smarty.capture.starsText}
 			</div>
 		{/if}
 
@@ -24,11 +27,11 @@
 					{assign var=rname value=$ratingNames.$rate}
 					<li>
 						{if !$gBitUser->isRegistered()}
-							<a {if type != 'mini'}onmouseover="$('{$divid}').innerHTML='{tr}You need to log in to rate{/tr}';" class="stars-{$rate}" {/if}href="{$smarty.const.USERS_PKG_URL}login.php">{tr}You need to log in to rate{/tr}</a>
+							<a {if $type != 'mini'}onmouseover="$('{$divid}').innerHTML='{tr}You need to log in to rate{/tr}';" {/if}class="stars-{$rate}" href="{$smarty.const.USERS_PKG_URL}login.php">{tr}You need to log in to rate{/tr}</a>
 						{elseif $gBitSystem->isFeatureActive( 'stars_use_ajax' )}
-							<a {if type != 'mini'}onmouseover="$('{$divid}').innerHTML='{$rname}';" class="stars-{$rate}" {/if}href="javascript:ajax_updater( 'stars-{$serviceHash.content_id}', '{$smarty.const.STARS_PKG_URL}rate.php', 'content_id={$serviceHash.content_id}&amp;stars_rating={$rate}' );" title="{$rname}">{$rate}</a>
+						<a {if $type != 'mini'}onmouseover="$('{$divid}').innerHTML='{$rname|escape:javascript}';" onmouseout="$('{$divid}').innerHTML='{$smarty.capture.starsText|escape:javascript}';" {/if}class="stars-{$rate}" href="javascript:ajax_updater( 'stars-{$serviceHash.content_id}', '{$smarty.const.STARS_PKG_URL}rate.php', 'content_id={$serviceHash.content_id}&amp;stars_rating={$rate}' );" title="{$rname}">{$rate}</a>
 						{else}
-							<a {if type != 'mini'}onmouseover="$('{$divid}').innerHTML='{$rname}';" class="stars-{$rate}" {/if}href="{$smarty.const.STARS_PKG_URL}rate.php?content_id={$serviceHash.content_id}&amp;stars_rating={$rate}" title="{$rname}">{$rate}</a>
+							<a {if $type != 'mini'}oonmouseover="$('{$divid}').innerHTML='{$rname|escape:javascript}';" onmouseout="$('{$divid}').innerHTML='{$smarty.capture.starsText|escape:javascript}';" {/if}class="stars-{$rate}" href="{$smarty.const.STARS_PKG_URL}rate.php?content_id={$serviceHash.content_id}&amp;stars_rating={$rate}" title="{$rname}">{$rate}</a>
 						{/if}
 					</li>
 				{/foreach}
