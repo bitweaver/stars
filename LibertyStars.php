@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.6 2006/12/23 09:29:05 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.7 2006/12/26 17:11:04 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.6 $ $Date: 2006/12/23 09:29:05 $
+* @version $Revision: 1.7 $ $Date: 2006/12/26 17:11:04 $
 * @package stars
 */
 
@@ -494,7 +494,7 @@ function stars_template_setup( $pStars ) {
  */
 function stars_content_list_sql( &$pObject ) {
 	global $gBitSystem, $gBitUser, $gBitSmarty;
-	if( $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
+    if( method_exists( $pObject, 'getContentType' ) && $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
 		// in some cases, such as articles, rating is allowed when getList is called.
 		// TODO: only load this when needed?
 		if( $gBitSystem->isFeatureActive( 'stars_use_ajax' ) ) {
@@ -534,7 +534,7 @@ function stars_content_list_sql( &$pObject ) {
  */
 function stars_content_load_sql( &$pObject ) {
 	global $gBitSystem, $gBitUser, $gBitSmarty;
-	if( $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
+    if( method_exists( $pObject, 'getContentType' ) && $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
 		if( $gBitSystem->isFeatureActive( 'stars_use_ajax' ) ) {
 			$gBitSmarty->assign( 'loadAjax', 'prototype' );
 		}
