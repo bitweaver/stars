@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.7 2006/12/26 17:11:04 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.8 2007/01/06 09:46:26 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.7 $ $Date: 2006/12/26 17:11:04 $
+* @version $Revision: 1.8 $ $Date: 2007/01/06 09:46:26 $
 * @package stars
 */
 
@@ -71,7 +71,7 @@ class LibertyStars extends LibertyBase {
 
 		// set custom sorting before we call prepGetList()
 		if( !empty( $pListHash['sort_mode'] ) ) {
-			$order .= " ORDER BY ".$this->mDb->convert_sortmode( $pListHash['sort_mode'] )." ";
+			$order .= " ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] )." ";
 		} else {
 			// set a default sort_mode
 			$order .= " ORDER BY sts.`rating` DESC";
