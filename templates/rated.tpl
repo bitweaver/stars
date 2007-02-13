@@ -19,7 +19,7 @@
 					<td>{$item.content_type_guid}</td>
 					<td style="text-align:right;">{$item.update_count}</td>
 					<td style="text-align:right;">
-						<a href="{$smarty.const.STARS_PKG_URL}details.php?content_id={$item.content_id}">{$item.rating} / 100</a>
+						<a href="{$smarty.const.STARS_PKG_URL}details.php?content_id={$item.content_id}">{$item.rating}%</a>
 					</td>
 				</tr>
 			{/foreach}

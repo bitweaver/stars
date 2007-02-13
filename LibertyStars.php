@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.8 2007/01/06 09:46:26 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.9 2007/02/13 14:33:07 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.8 $ $Date: 2007/01/06 09:46:26 $
+* @version $Revision: 1.9 $ $Date: 2007/02/13 14:33:07 $
 * @package stars
 */
 
@@ -67,41 +67,50 @@ class LibertyStars extends LibertyBase {
 		global $gBitSystem, $gBitUser, $gLibertySystem;
 
 		$ret = $bindVars = array();
-		$where = $order = '';
+		$where = $join = $select = '';
 
 		// set custom sorting before we call prepGetList()
-		if( !empty( $pListHash['sort_mode'] ) ) {
-			$order .= " ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] )." ";
+		if( !empty( $pListHash['sort_mode'] )) {
+			$order = " ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] )." ";
 		} else {
 			// set a default sort_mode
-			$order .= " ORDER BY sts.`rating` DESC";
+			$order = " ORDER BY sts.`rating` DESC";
 		}
 
 		LibertyContent::prepGetList( $pListHash );
 
-		if( !empty( $pListHash['find'] ) ) {
-			$where .= empty( $where ) ? ' WHERE ' : ' AND ';
-			$where .= " UPPER( lc.`title` ) LIKE ? ";
-			$bindVars[] = '%'.strtoupper( $pListHash['find'] ).'%';
+		if( !empty( $pListHash['user_id'] )) {
+			$where      .= empty( $where ) ? ' WHERE ' : ' AND ';
+			$where      .= " sth.`user_id`=? ";
+			$bindVars[]  = $pListHash['user_id'];
+			$select     .= ", sth.`rating` AS `user_rating`";
+			$join       .= " LEFT OUTER JOIN `".BIT_DB_PREFIX."stars_history` sth ON( sts.`content_id` = sth.`content_id` ) ";
+			$order       = " ORDER BY sth.`rating` DESC";
+		}
+
+		if( !empty( $pListHash['find'] )) {
+			$where      .= empty( $where ) ? ' WHERE ' : ' AND ';
+			$where      .= " UPPER( lc.`title` ) LIKE ? ";
+			$bindVars[]  = '%'.strtoupper( $pListHash['find'] ).'%';
 		}
 
 		$query = "
 			SELECT sts.*, lch.`hits`, lch.`last_hit`, lc.`event_time`, lc.`title`,
-			lc.`last_modified`, lc.`content_type_guid`, lc.`ip`, lc.`created`
+			lc.`last_modified`, lc.`content_type_guid`, lc.`ip`, lc.`created` $select
 			FROM `".BIT_DB_PREFIX."stars` sts
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON ( lc.`content_id` = sts.`content_id` )
 				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON ( lc.`content_id` = lch.`content_id` )
-			$where $order";
+			$join $where $order";
 
 		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
 
 		while( $aux = $result->fetchRow() ) {
 			$type = &$gLibertySystem->mContentTypes[$aux['content_type_guid']];
-			if( empty( $type['content_object'] ) ) {
+			if( empty( $type['content_object'] )) {
 				include_once( $gBitSystem->mPackages[$type['handler_package']]['path'].$type['handler_file'] );
 				$type['content_object'] = new $type['handler_class']();
 			}
-			if( !empty( $gBitSystem->mPackages[$type['handler_package']] ) ) {
+			if( !empty( $gBitSystem->mPackages[$type['handler_package']] )) {
 				$aux['display_link'] = $type['content_object']->getDisplayLink( $aux['title'], $aux );
 				$aux['title']        = $type['content_object']->getTitle( $aux );
 				$aux['display_url']  = $type['content_object']->getDisplayUrl( $aux['content_id'], $aux );
@@ -109,7 +118,12 @@ class LibertyStars extends LibertyBase {
 			$ret[] = $aux;
 		}
 
-		$query = "SELECT COUNT( sts.`content_id` ) FROM `".BIT_DB_PREFIX."stars` sts $where";
+		$query = "
+			SELECT COUNT( sts.`content_id` )
+			FROM `".BIT_DB_PREFIX."stars` sts
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON ( lc.`content_id` = sts.`content_id` )
+				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON ( lc.`content_id` = lch.`content_id` )
+			$join $where";
 		$pListHash['cant'] = $this->mDb->getOne( $query, $bindVars );
 
 		LibertyContent::postGetList( $pListHash );
