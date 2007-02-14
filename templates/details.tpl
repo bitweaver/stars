@@ -64,7 +64,7 @@
 				{include file="bitpackage:stars/user_ratings.tpl"}
 
 				<div class="row">
-					{formlabel label="User Rating Contributions" for=""}
+					{formlabel label="Individual Ratings" for=""}
 					{forminput}
 						<ul class="data">
 							{foreach from=$userRatings item=rating}
