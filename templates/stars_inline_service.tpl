@@ -31,7 +31,7 @@
 						{elseif $gBitSystem->isFeatureActive( 'stars_use_ajax' )}
 						<a {if $type != 'mini'}onmouseover="$('{$divid}').innerHTML='{$rname|escape:javascript}';" onmouseout="$('{$divid}').innerHTML='{$smarty.capture.starsText|escape:javascript}';" {/if}class="stars-{$rate}" href="javascript:ajax_updater( 'stars-{$serviceHash.content_id}', '{$smarty.const.STARS_PKG_URL}rate.php', 'content_id={$serviceHash.content_id}&amp;stars_rating={$rate}{if $type == 'mini'}&amp;type=mini{/if}' );" title="{$rname}">{$rate}</a>
 						{else}
-							<a {if $type != 'mini'}oonmouseover="$('{$divid}').innerHTML='{$rname|escape:javascript}';" onmouseout="$('{$divid}').innerHTML='{$smarty.capture.starsText|escape:javascript}';" {/if}class="stars-{$rate}" href="{$smarty.const.STARS_PKG_URL}rate.php?content_id={$serviceHash.content_id}&amp;stars_rating={$rate}" title="{$rname}">{$rate}</a>
+							<a {if $type != 'mini'}onmouseover="$('{$divid}').innerHTML='{$rname|escape:javascript}';" onmouseout="$('{$divid}').innerHTML='{$smarty.capture.starsText|escape:javascript}';" {/if}class="stars-{$rate}" href="{$smarty.const.STARS_PKG_URL}rate.php?content_id={$serviceHash.content_id}&amp;stars_rating={$rate}" title="{$rname}">{$rate}</a>
 						{/if}
 					</li>
 				{/foreach}
