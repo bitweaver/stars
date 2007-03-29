@@ -22,8 +22,13 @@
 						<a href="{$smarty.const.STARS_PKG_URL}details.php?content_id={$item.content_id}">{$item.rating}%</a>
 					</td>
 				</tr>
+			{foreachelse}
+				<tr class="norecords">
+					<td colspan="4">{tr}No records found{/tr}</td>
+				</tr>
 			{/foreach}
 		</table>
+
 		{pagination}
 	</div><!-- end .body -->
 </div><!-- end .stars -->
