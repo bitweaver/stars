@@ -83,14 +83,6 @@
 				</div>
 			{/legend}
 		{/jstab}
-
-		{jstab title="Content"}
-			{legend legend="Rated content"}
-				<ul>
-					<li>{smartlink ititle="View a list of rated content" ipackage=stars ifile="index.php"}</li>
-				</ul>
-			{/legend}
-		{/jstab}
 	{/jstabs}
 
 {/form}
