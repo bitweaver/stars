@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_stars/admin/admin_stars_inc.php,v 1.1 2006/09/14 05:58:52 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_stars/admin/admin_stars_inc.php,v 1.2 2007/06/13 15:23:27 squareing Exp $
 // Copyright (c) 2005 bitweaver Stars
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -23,11 +23,6 @@ $formStarsOptions = array(
 		'note' => 'Choosing this option will decrease load times when rating, however requires modern browsers with javascript enabled to allow for ratings.',
 		'type' => 'toggle',
 	),
-//	"stars_auto_hide_content" => array(
-//		'label' => 'Auto Hide Content',
-//		'note' => 'If content is rated badly by the users, you can specify what the rating has to be before it is hidden. Enter a percentage rating: 0 disables the feature, 25 means that the average rating has to be below 25% before it is hidden.',
-//		'type' => 'input',
-//	),
 	"stars_rerating" => array(
 		'label' => 'Re- Ratings',
 		'note' => 'Allow users to change their ratings at any time. When content changes, users can update their rating accordingly.',

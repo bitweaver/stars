@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.9 2007/02/13 14:33:07 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.10 2007/06/13 15:23:27 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.9 $ $Date: 2007/02/13 14:33:07 $
+* @version $Revision: 1.10 $ $Date: 2007/06/13 15:23:27 $
 * @package stars
 */
 
@@ -529,12 +529,6 @@ function stars_content_list_sql( &$pObject ) {
 				ON ( lc.`content_id`=sts.`content_id` )
 			LEFT JOIN `".BIT_DB_PREFIX."stars_history` sth
 				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`='".$gBitUser->mUserId."' )";
-		if( $gBitSystem->isFeatureActive( 'stars_auto_hide_content' ) ) {
-			// need to take update_count into the equation as well
-			$ret['where_sql'] = " AND( sts.`rating`>? OR sts.`rating` IS NULL OR sts.`rating`=? )";
-			$ret['bind_vars'][] = $gBitSystem->getConfig( 'stars_auto_hide_content' );
-			$ret['bind_vars'][] = 0;
-		}
 		return $ret;
 	}
 }
@@ -567,12 +561,6 @@ function stars_content_load_sql( &$pObject ) {
 				ON ( lc.`content_id`=sts.`content_id` )
 			LEFT JOIN `".BIT_DB_PREFIX."stars_history` sth
 				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`='".$gBitUser->mUserId."' )";
-		if( $gBitSystem->isFeatureActive( 'stars_auto_hide_content' ) ) {
-			// need to take update_count into the equation as well
-			$ret['where_sql'] = " AND( sts.`rating`>? OR sts.`rating` IS NULL OR sts.`rating`=? )";
-			$ret['bind_vars'][] = $gBitSystem->getConfig( 'stars_auto_hide_content' );
-			$ret['bind_vars'][] = 0;
-		}
 		return $ret;
 	}
 }
