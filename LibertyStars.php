@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.10 2007/06/13 15:23:27 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.11 2007/06/15 18:51:40 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.10 $ $Date: 2007/06/13 15:23:27 $
+* @version $Revision: 1.11 $ $Date: 2007/06/15 18:51:40 $
 * @package stars
 */
 
@@ -482,20 +482,20 @@ class LibertyStars extends LibertyBase {
 /**
  * Prepare and assign data to templates
  * 
- * @param array $pStars 
  * @access public
  * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
  */
-function stars_template_setup( $pStars ) {
+function stars_template_setup() {
 	global $gBitSystem, $gBitUser, $gBitSmarty;
+	$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 	$default_names = array();
-	for( $i = 0; $i < $pStars; $i++ ) {
-		$default_names[] = ( $i+1 )." / ".$gBitSystem->getConfig( 'stars_used_in_display' );
+	for( $i = 0; $i < $stars; $i++ ) {
+		$default_names[] = ( $i + 1 )." / ".$gBitSystem->getConfig( 'stars_used_in_display' );
 	}
 	$default_names_flat = implode( ",", $default_names );
-	$ratingNames = explode( ",", "," . $gBitSystem->getConfig( 'stars_rating_names', $default_names_flat ) );
-	$gBitSmarty->assign( 'ratingNames', $ratingNames);
-	$gBitSmarty->assign( 'starsLinks', $hash = array_fill( 1, $pStars, 1 ) );
+	$ratingNames = explode( ",", "," . $gBitSystem->getConfig( 'stars_rating_names', $default_names_flat ));
+	$gBitSmarty->assign( 'ratingNames', $ratingNames );
+	$gBitSmarty->assign( 'starsLinks', $hash = array_fill( 1, $stars, 1 ));
 	$gBitSmarty->assign( 'loadStars', TRUE );
 }
 
@@ -516,7 +516,6 @@ function stars_content_list_sql( &$pObject ) {
 		}
 		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
-		stars_template_setup( $stars );
 		$ret['select_sql'] = ",
 			lc.`content_id` AS `stars_load`,
 			sts.`update_count` AS stars_update_count,
@@ -548,7 +547,6 @@ function stars_content_load_sql( &$pObject ) {
 		}
 		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
-		stars_template_setup( $stars );
 		$ret['select_sql'] = ",
 			lc.`content_id` AS `stars_load`,
 			sts.`update_count` AS stars_update_count,
@@ -577,4 +575,5 @@ function stars_content_expunge( &$pObject, &$pParamHash ) {
 	$stars = new LibertyStars( $pObject->mContentId );
 	$stars->expunge();
 }
+
 ?>

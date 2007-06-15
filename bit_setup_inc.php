@@ -16,6 +16,10 @@ if( $gBitSystem->isPackageActive( 'stars' ) ) {
 		$gBitSystem->setConfig( 'stars_use_ajax', FALSE );
 	}
 
+	// unfortunately we have situations where we can't load stars initiation 
+	// from the sql service functions due to the way the center modules work.
+	stars_template_setup();
+
 	$gLibertySystem->registerService( LIBERTY_SERVICE_RATING, STARS_PKG_NAME, array(
 //		'content_display_function'  => 'stars_content_display',
 		'content_load_sql_function' => 'stars_content_load_sql',
