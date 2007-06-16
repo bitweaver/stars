@@ -1,5 +1,5 @@
 <?php
-global $gBitSystem, $gBitSmarty, $gPreviewStyle;
+global $gBitSystem, $gBitSmarty, $gBitThemes;
 
 $registerHash = array(
 	'package_name' => 'stars',
@@ -12,8 +12,8 @@ if( $gBitSystem->isPackageActive( 'stars' ) ) {
 	require_once( STARS_PKG_PATH.'LibertyStars.php' );
 
 	// if we are using a text browser theme, make sure not to use ajax
-	if( $gPreviewStyle == 'lynx' ) {
-		$gBitSystem->setConfig( 'stars_use_ajax', FALSE );
+	if( $gBitThemes->getStyle()  == 'lynx' ) {
+		$gBitSystem->setConfig( 'recommends_use_ajax', FALSE );
 	}
 
 	// unfortunately we have situations where we can't load stars initiation 
