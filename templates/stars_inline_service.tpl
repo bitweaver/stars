@@ -5,21 +5,6 @@
 		<script type="text/javascript">/*<![CDATA[*/ show_spinner('spinner'); /*]]>*/</script>
 	{/if}
 	<div class="stars-container" id="stars-{$serviceHash.content_id}">
-		{if $type != 'mini'}
-			{capture name=starsText}
-				{if $serviceHash.stars_rating}
-					{math equation="rating * stars / 100" stars=$gBitSystem->getConfig('stars_used_in_display') rating=$serviceHash.stars_rating format="%.1f"} / {$gBitSystem->getConfig('stars_used_in_display')} {tr}in {$serviceHash.stars_update_count} votes{/tr}
-				{else}
-					{tr}Waiting for {$gBitSystem->getConfig('stars_minimum_ratings',5)} ratings{/tr}
-				{/if}
-				{assign var=userRating value=$serviceHash.stars_user_rating}
-				{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$ratingNames.$userRating}{/if}
-			{/capture}
-			<div id="{$divid}" class="small">
-				{$smarty.capture.starsText}
-			</div>
-		{/if}
-
 		<ul class="stars-rating">
 			<li class="stars-current" style="width:{$serviceHash.stars_pixels|default:0}px;">{if $serviceHash.stars_user_pixels}{tr}Your rating{/tr}: {$serviceHash.stars_user_rating} / {$gBitSystem->getConfig('stars_used_in_display')}{else}{tr}Rate{/tr}{/if}</li>
 			{if !$serviceHash.stars_user_rating || $gBitSystem->isFeatureActive( "stars_rerating" )}
@@ -37,6 +22,20 @@
 				{/foreach}
 			{/if}
 		</ul>
+		{if $type != 'mini'}
+			{capture name=starsText}
+				{if $serviceHash.stars_rating}
+					{math equation="rating * stars / 100" stars=$gBitSystem->getConfig('stars_used_in_display') rating=$serviceHash.stars_rating format="%.1f"} / {$gBitSystem->getConfig('stars_used_in_display')} {tr}in {$serviceHash.stars_update_count} votes{/tr}
+				{else}
+					{tr}Waiting for {$gBitSystem->getConfig('stars_minimum_ratings',5)} ratings{/tr}
+				{/if}
+				{assign var=userRating value=$serviceHash.stars_user_rating}
+				{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$ratingNames.$userRating}{/if}
+			{/capture}
+			<div id="{$divid}" class="small">
+				{$smarty.capture.starsText}
+			</div>
+		{/if}
 	</div>
 	{formfeedback hash=$starsfeed}
 {/if}

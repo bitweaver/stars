@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_stars/admin/admin_stars_inc.php,v 1.2 2007/06/13 15:23:27 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_stars/admin/admin_stars_inc.php,v 1.3 2007/06/22 20:24:21 nickpalmer Exp $
 // Copyright (c) 2005 bitweaver Stars
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -31,6 +31,11 @@ $formStarsOptions = array(
 	"stars_user_ratings" => array(
 		'label' => 'User Ratings',
 		'note' => 'Show the average rating of a users contributions on thier homepage',
+		'type' => 'toggle',
+	),
+	"stars_always_list" => array(
+		'label' => 'Always Show In Lists',
+		'note' => 'Always show stars in the list service even if there are no ratings yet',
 		'type' => 'toggle',
 	),
 );
