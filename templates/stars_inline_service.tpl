@@ -1,5 +1,17 @@
 {strip}
 {if $serviceHash.stars_load}
+	{if $type != 'mini'}
+		{capture name=starsText}
+			{if $serviceHash.stars_rating}
+				{math equation="rating * stars / 100" stars=$gBitSystem->getConfig('stars_used_in_display') rating=$serviceHash.stars_rating format="%.1f"} / {$gBitSystem->getConfig('stars_used_in_display')} {tr}in {$serviceHash.stars_update_count} votes{/tr}
+			{else}
+				{tr}Waiting for {$gBitSystem->getConfig('stars_minimum_ratings',5)} ratings{/tr}
+			{/if}
+			{assign var=userRating value=$serviceHash.stars_user_rating}
+			{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$ratingNames.$userRating}{/if}
+		{/capture}
+	{/if}
+
 	{assign var=divid value="stars-display-`$serviceHash.content_id`"}
 	{if $gBitSystem->isFeatureActive( 'stars_use_ajax' )}
 		<script type="text/javascript">/*<![CDATA[*/ show_spinner('spinner'); /*]]>*/</script>
@@ -23,15 +35,6 @@
 			{/if}
 		</ul>
 		{if $type != 'mini'}
-			{capture name=starsText}
-				{if $serviceHash.stars_rating}
-					{math equation="rating * stars / 100" stars=$gBitSystem->getConfig('stars_used_in_display') rating=$serviceHash.stars_rating format="%.1f"} / {$gBitSystem->getConfig('stars_used_in_display')} {tr}in {$serviceHash.stars_update_count} votes{/tr}
-				{else}
-					{tr}Waiting for {$gBitSystem->getConfig('stars_minimum_ratings',5)} ratings{/tr}
-				{/if}
-				{assign var=userRating value=$serviceHash.stars_user_rating}
-				{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$ratingNames.$userRating}{/if}
-			{/capture}
 			<div id="{$divid}" class="small">
 				{$smarty.capture.starsText}
 			</div>
