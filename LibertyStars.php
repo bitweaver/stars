@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.11 2007/06/15 18:51:40 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.12 2007/07/01 23:43:54 spiderr Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.11 $ $Date: 2007/06/15 18:51:40 $
+* @version $Revision: 1.12 $ $Date: 2007/07/01 23:43:54 $
 * @package stars
 */
 
@@ -77,7 +77,7 @@ class LibertyStars extends LibertyBase {
 			$order = " ORDER BY sts.`rating` DESC";
 		}
 
-		LibertyContent::prepGetList( $pListHash );
+		LibertyBase::prepGetList( $pListHash );
 
 		if( !empty( $pListHash['user_id'] )) {
 			$where      .= empty( $where ) ? ' WHERE ' : ' AND ';
