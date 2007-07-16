@@ -13,9 +13,6 @@
 	{/if}
 
 	{assign var=divid value="stars-display-`$serviceHash.content_id`"}
-	{if $gBitSystem->isFeatureActive( 'stars_use_ajax' )}
-		<script type="text/javascript">/*<![CDATA[*/ show_spinner('spinner'); /*]]>*/</script>
-	{/if}
 	<div class="stars-container" id="stars-{$serviceHash.content_id}">
 		<ul class="stars-rating">
 			<li class="stars-current" style="width:{$serviceHash.stars_pixels|default:0}px;">{if $serviceHash.stars_user_pixels}{tr}Your rating{/tr}: {$serviceHash.stars_user_rating} / {$gBitSystem->getConfig('stars_used_in_display')}{else}{tr}Rate{/tr}{/if}</li>
