@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.15 2007/07/10 20:09:44 spiderr Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.16 2007/10/10 18:07:18 wjames5 Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.15 $ $Date: 2007/07/10 20:09:44 $
+* @version $Revision: 1.16 $ $Date: 2007/10/10 18:07:18 $
 * @package stars
 */
 
@@ -512,7 +512,7 @@ function stars_content_list_sql( &$pObject ) {
 		// in some cases, such as articles, rating is allowed when getList is called.
 		// TODO: only load this when needed?
 		if( $gBitSystem->isFeatureActive( 'stars_use_ajax' ) ) {
-			$gBitThemes->loadAjax( 'prototype' );
+			$gBitThemes->loadAjax( 'mochikit' );
 		}
 		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
@@ -543,7 +543,7 @@ function stars_content_load_sql( &$pObject ) {
 	global $gBitSystem, $gBitUser, $gBitSmarty, $gBitThemes;
     if( method_exists( $pObject, 'getContentType' ) && $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
 		if( $gBitSystem->isFeatureActive( 'stars_use_ajax' ) ) {
-			$gBitThemes->loadAjax( 'prototype' );
+			$gBitThemes->loadAjax( 'mochikit' );
 		}
 		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
