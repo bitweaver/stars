@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.16 2007/10/10 18:07:18 wjames5 Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.17 2007/10/22 15:51:16 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.16 $ $Date: 2007/10/10 18:07:18 $
+* @version $Revision: 1.17 $ $Date: 2007/10/22 15:51:16 $
 * @package stars
 */
 
@@ -541,24 +541,28 @@ function stars_content_list_sql( &$pObject ) {
  */
 function stars_content_load_sql( &$pObject ) {
 	global $gBitSystem, $gBitUser, $gBitSmarty, $gBitThemes;
-    if( method_exists( $pObject, 'getContentType' ) && $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
+	if( method_exists( $pObject, 'getContentType' ) && $gBitSystem->isFeatureActive( 'stars_rate_'.$pObject->getContentType() ) ) {
 		if( $gBitSystem->isFeatureActive( 'stars_use_ajax' ) ) {
 			$gBitThemes->loadAjax( 'mochikit' );
 		}
 		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
-		$ret['select_sql'] = ",
-			lc.`content_id` AS `stars_load`,
-			sts.`update_count` AS stars_update_count,
-			sts.`rating` AS stars_rating,
-			( sts.`rating` * $pixels / 100 ) AS stars_pixels,
-			( sth.`rating` * $stars / 100 ) AS stars_user_rating,
-			( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
-		$ret['join_sql'] = "
-			LEFT JOIN `".BIT_DB_PREFIX."stars` sts
-				ON ( lc.`content_id`=sts.`content_id` )
-			LEFT JOIN `".BIT_DB_PREFIX."stars_history` sth
-				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`='".$gBitUser->mUserId."' )";
+
+		// currently this code is acting as a showcase for the new LibertyContent::getLibertySql and LibertyContent::convertQueryHash methods
+		// please don't copy this code (yet) as the new system might not be the final version - xing - Monday Oct 22, 2007   17:28:38 CEST
+		// service SQL hash
+		$ret['select']['sql'][] = "lc.`content_id` AS `stars_load`";
+		$ret['select']['sql'][] = "sts.`update_count` AS stars_update_count";
+		$ret['select']['sql'][] = "sts.`rating` AS stars_rating";
+		$ret['select']['sql'][] = "( sts.`rating` * $pixels / 100 ) AS stars_pixels";
+		$ret['select']['sql'][] = "( sth.`rating` * $stars / 100 ) AS stars_user_rating";
+		$ret['select']['sql'][] = "( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
+
+		$ret['join']['sql'][] = "
+			LEFT OUTER JOIN `".BIT_DB_PREFIX."stars` sts ON ( lc.`content_id` = sts.`content_id` )
+			LEFT OUTER JOIN `".BIT_DB_PREFIX."stars_history` sth ON ( lc.`content_id` = sth.`content_id` AND sth.`user_id`= ? )";
+		$ret['join']['var'][] = $gBitUser->mUserId;
+
 		return $ret;
 	}
 }
