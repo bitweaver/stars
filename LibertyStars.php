@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.17 2007/10/22 15:51:16 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.18 2007/10/22 15:55:23 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.17 $ $Date: 2007/10/22 15:51:16 $
+* @version $Revision: 1.18 $ $Date: 2007/10/22 15:55:23 $
 * @package stars
 */
 
@@ -551,12 +551,14 @@ function stars_content_load_sql( &$pObject ) {
 		// currently this code is acting as a showcase for the new LibertyContent::getLibertySql and LibertyContent::convertQueryHash methods
 		// please don't copy this code (yet) as the new system might not be the final version - xing - Monday Oct 22, 2007   17:28:38 CEST
 		// service SQL hash
-		$ret['select']['sql'][] = "lc.`content_id` AS `stars_load`";
-		$ret['select']['sql'][] = "sts.`update_count` AS stars_update_count";
-		$ret['select']['sql'][] = "sts.`rating` AS stars_rating";
-		$ret['select']['sql'][] = "( sts.`rating` * $pixels / 100 ) AS stars_pixels";
-		$ret['select']['sql'][] = "( sth.`rating` * $stars / 100 ) AS stars_user_rating";
-		$ret['select']['sql'][] = "( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
+		$ret['select']['sql'] = array(
+			"lc.`content_id` AS `stars_load`",
+			"sts.`update_count` AS stars_update_count",
+			"sts.`rating` AS stars_rating",
+			"( sts.`rating` * $pixels / 100 ) AS stars_pixels",
+			"( sth.`rating` * $stars / 100 ) AS stars_user_rating",
+			"( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ",
+		);
 
 		$ret['join']['sql'][] = "
 			LEFT OUTER JOIN `".BIT_DB_PREFIX."stars` sts ON ( lc.`content_id` = sts.`content_id` )
