@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.18 2007/10/22 15:55:23 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.19 2007/10/25 06:54:26 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.18 $ $Date: 2007/10/22 15:55:23 $
+* @version $Revision: 1.19 $ $Date: 2007/10/25 06:54:26 $
 * @package stars
 */
 
@@ -548,22 +548,18 @@ function stars_content_load_sql( &$pObject ) {
 		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
 		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
 
-		// currently this code is acting as a showcase for the new LibertyContent::getLibertySql and LibertyContent::convertQueryHash methods
-		// please don't copy this code (yet) as the new system might not be the final version - xing - Monday Oct 22, 2007   17:28:38 CEST
-		// service SQL hash
-		$ret['select']['sql'] = array(
-			"lc.`content_id` AS `stars_load`",
-			"sts.`update_count` AS stars_update_count",
-			"sts.`rating` AS stars_rating",
-			"( sts.`rating` * $pixels / 100 ) AS stars_pixels",
-			"( sth.`rating` * $stars / 100 ) AS stars_user_rating",
-			"( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ",
-		);
-
-		$ret['join']['sql'][] = "
-			LEFT OUTER JOIN `".BIT_DB_PREFIX."stars` sts ON ( lc.`content_id` = sts.`content_id` )
-			LEFT OUTER JOIN `".BIT_DB_PREFIX."stars_history` sth ON ( lc.`content_id` = sth.`content_id` AND sth.`user_id`= ? )";
-		$ret['join']['var'][] = $gBitUser->mUserId;
+		$ret['select_sql'] = ",
+			lc.`content_id` AS `stars_load`,
+			sts.`update_count` AS stars_update_count,
+			sts.`rating` AS stars_rating,
+			( sts.`rating` * $pixels / 100 ) AS stars_pixels,
+			( sth.`rating` * $stars / 100 ) AS stars_user_rating,
+			( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
+		$ret['join_sql'] = "
+			LEFT JOIN `".BIT_DB_PREFIX."stars` sts
+				ON ( lc.`content_id`=sts.`content_id` )
+			LEFT JOIN `".BIT_DB_PREFIX."stars_history` sth
+				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`='".$gBitUser->mUserId."' )";
 
 		return $ret;
 	}
