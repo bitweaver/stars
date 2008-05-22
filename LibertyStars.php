@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.19 2007/10/25 06:54:26 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.20 2008/05/22 15:54:24 nickpalmer Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.19 $ $Date: 2007/10/25 06:54:26 $
+* @version $Revision: 1.20 $ $Date: 2008/05/22 15:54:24 $
 * @package stars
 */
 
@@ -104,6 +104,8 @@ class LibertyStars extends LibertyBase {
 
 		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
 
+		$stars = $gBitSystem->getConfig( 'stars_used_in_display', 5 );
+		$pixels = $stars *  $gBitSystem->getConfig( 'stars_icon_width', 22 );
 		while( $aux = $result->fetchRow() ) {
 			$type = &$gLibertySystem->mContentTypes[$aux['content_type_guid']];
 			if( empty( $type['content_object'] )) {
@@ -114,6 +116,7 @@ class LibertyStars extends LibertyBase {
 				$aux['display_link'] = $type['content_object']->getDisplayLink( $aux['title'], $aux );
 				$aux['title']        = $type['content_object']->getTitle( $aux );
 				$aux['display_url']  = $type['content_object']->getDisplayUrl( $aux['content_id'], $aux );
+				$aux['stars_pixels'] = ($aux['rating'] * $pixels) / 100;
 			}
 			$ret[] = $aux;
 		}
