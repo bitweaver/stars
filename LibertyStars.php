@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.20 2008/05/22 15:54:24 nickpalmer Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.21 2008/06/13 14:02:18 squareing Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.20 $ $Date: 2008/05/22 15:54:24 $
+* @version $Revision: 1.21 $ $Date: 2008/06/13 14:02:18 $
 * @package stars
 */
 
@@ -523,9 +523,9 @@ function stars_content_list_sql( &$pObject ) {
 			lc.`content_id` AS `stars_load`,
 			sts.`update_count` AS stars_update_count,
 			sts.`rating` AS stars_rating,
-			( sts.`rating` * $pixels / 100 ) AS stars_pixels,
-			( sth.`rating` * $stars / 100 ) AS stars_user_rating,
-			( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
+			ROUND( sts.`rating` * $pixels / 100 ) AS stars_pixels,
+			ROUND( sth.`rating` * $stars / 100 ) AS stars_user_rating,
+			ROUND( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
 		$ret['join_sql'] = "
 			LEFT JOIN `".BIT_DB_PREFIX."stars` sts
 				ON ( lc.`content_id`=sts.`content_id` )
@@ -555,9 +555,9 @@ function stars_content_load_sql( &$pObject ) {
 			lc.`content_id` AS `stars_load`,
 			sts.`update_count` AS stars_update_count,
 			sts.`rating` AS stars_rating,
-			( sts.`rating` * $pixels / 100 ) AS stars_pixels,
-			( sth.`rating` * $stars / 100 ) AS stars_user_rating,
-			( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
+			ROUND( sts.`rating` * $pixels / 100 ) AS stars_pixels,
+			ROUND( sth.`rating` * $stars / 100 ) AS stars_user_rating,
+			ROUND( sth.`rating` * $pixels / 100 ) AS stars_user_pixels ";
 		$ret['join_sql'] = "
 			LEFT JOIN `".BIT_DB_PREFIX."stars` sts
 				ON ( lc.`content_id`=sts.`content_id` )
