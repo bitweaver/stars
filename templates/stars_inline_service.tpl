@@ -8,7 +8,7 @@
 				{tr}Waiting for {$gBitSystem->getConfig('stars_minimum_ratings',5)} ratings{/tr}
 			{/if}
 			{assign var=userRating value=$serviceHash.stars_user_rating}
-			{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$ratingNames.$userRating}{/if}
+			{if $serviceHash.stars_user_rating} &nbsp;&bull;&nbsp; {tr}Your rating{/tr}: {$userRating|number_format:1}{/if}
 		{/capture}
 	{/if}
 
