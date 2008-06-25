@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/details.php,v 1.5 2007/02/13 14:33:07 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/details.php,v 1.6 2008/06/25 22:21:24 spiderr Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.5 $ $Date: 2007/02/13 14:33:07 $
+* @version $Revision: 1.6 $ $Date: 2008/06/25 22:21:24 $
 * @package stars
 */
 
@@ -46,5 +46,5 @@ if( @BitBase::verifyId( $_REQUEST['content_id'] )) {
 	$gBitSmarty->assign( 'userRatings', $userRatings );
 }
 
-$gBitSystem->display( 'bitpackage:stars/details.tpl', tra( 'Details of Rated Content' ) );
+$gBitSystem->display( 'bitpackage:stars/details.tpl', tra( 'Details of Rated Content' ) , array( 'display_mode' => 'display' ));
 ?>
