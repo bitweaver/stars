@@ -25,7 +25,7 @@
 {rdelim}
 .stars-rating	{ldelim}
 	background-position: 0px 0px;
-	width:{$icon_width*$stars};
+	width:{$icon_width*$stars}px;
 {rdelim}
 .stars-current	{ldelim}
 	background-position: 0px {$icon_height_current}px;
