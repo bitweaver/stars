@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.22 2008/06/14 08:00:05 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/LibertyStars.php,v 1.23 2009/03/22 03:26:14 spiderr Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.22 $ $Date: 2008/06/14 08:00:05 $
+* @version $Revision: 1.23 $ $Date: 2009/03/22 03:26:14 $
 * @package stars
 */
 
@@ -530,7 +530,8 @@ function stars_content_list_sql( &$pObject ) {
 			LEFT JOIN `".BIT_DB_PREFIX."stars` sts
 				ON ( lc.`content_id`=sts.`content_id` )
 			LEFT JOIN `".BIT_DB_PREFIX."stars_history` sth
-				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`='".$gBitUser->mUserId."' )";
+				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`=? )";
+		$ret['bind_vars'][] = $gBitUser->mUserId;
 		return $ret;
 	}
 }
@@ -562,7 +563,8 @@ function stars_content_load_sql( &$pObject ) {
 			LEFT JOIN `".BIT_DB_PREFIX."stars` sts
 				ON ( lc.`content_id`=sts.`content_id` )
 			LEFT JOIN `".BIT_DB_PREFIX."stars_history` sth
-				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`='".$gBitUser->mUserId."' )";
+				ON ( lc.`content_id`=sth.`content_id` AND sth.`user_id`=? )";
+		$ret['bind_vars'][] = $gBitUser->mUserId;
 
 		return $ret;
 	}
