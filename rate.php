@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/rate.php,v 1.4 2007/07/10 16:58:22 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/rate.php,v 1.5 2009/07/06 03:46:41 spiderr Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.4 $ $Date: 2007/07/10 16:58:22 $
+* @version $Revision: 1.5 $ $Date: 2009/07/06 03:46:41 $
 * @package stars
 */
 
@@ -45,7 +45,7 @@ if( $gBitThemes->isAjaxRequest() ) {
 	if( !empty( $_REQUEST['type'] ) ) {
 		$gBitSmarty->assign( 'type', $_REQUEST['type'] );
 	}
-	echo $gBitSmarty->fetch( 'bitpackage:stars/stars_inline_service.tpl' );
+	print $gBitSmarty->fetch( 'bitpackage:stars/stars_inline_service.tpl' );
 } elseif( !empty( $tmpObject ) && method_exists( $tmpObject, 'getDisplayUrl' )) {
 	bit_redirect( $tmpObject->getDisplayUrl() );
 }
