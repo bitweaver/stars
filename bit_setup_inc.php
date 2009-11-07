@@ -26,6 +26,7 @@ if( $gBitSystem->isPackageActive( 'stars' ) ) {
 		'content_list_sql_function' => 'stars_content_list_sql',
 		'content_expunge_function'  => 'stars_content_expunge',
 		'content_body_tpl'          => 'bitpackage:stars/stars_inline_service.tpl',
+		'content_comment_tpl'       => 'bitpackage:stars/stars_inline_service.tpl',
 		'content_list_sort_tpl'     => 'bitpackage:stars/stars_list_sort_service.tpl',
 		'content_list_actions_tpl'  => 'bitpackage:stars/stars_list_actions_service.tpl',
 	));
