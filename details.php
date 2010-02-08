@@ -1,16 +1,16 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/details.php,v 1.6 2008/06/25 22:21:24 spiderr Exp $
+* $Header: /cvsroot/bitweaver/_bit_stars/details.php,v 1.7 2010/02/08 21:27:25 wjames5 Exp $
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.6 $ $Date: 2008/06/25 22:21:24 $
+* @version $Revision: 1.7 $ $Date: 2010/02/08 21:27:25 $
 * @package stars
 */
 
 /**
  * Setup
  */
-require_once( "../bit_setup_inc.php" );
+require_once( "../kernel/setup_inc.php" );
 require_once( STARS_PKG_PATH."LibertyStars.php" );
 
 $gBitSystem->verifyPackage( 'stars' );
