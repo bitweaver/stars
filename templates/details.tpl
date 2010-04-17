@@ -9,7 +9,7 @@
 				<div class="row">
 					{formlabel label="Title"}
 					{forminput}
-					<a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$starsDetails.content_id}">{$starsDetails.title|escape}</a> <small>({$starsDetails.content_type.content_description})</small>
+					<a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$starsDetails.content_id}">{$starsDetails.title|escape}</a> <small>({$starsDetails.content_type.content_name})</small>
 					{/forminput}
 				</div>
 

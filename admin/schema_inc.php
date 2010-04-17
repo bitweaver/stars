@@ -46,4 +46,8 @@ $gBitInstaller->registerPreferences( STARS_PKG_NAME, array(
 	array( STARS_PKG_NAME, "stars_icon_width", "22" ),
 	array( STARS_PKG_NAME, "stars_icon_height", "22" ),
 ) );
-?>
+
+// Requirements
+$gBitInstaller->registerRequirements( STARS_PKG_NAME, array(
+    'liberty' => array( 'min' => '2.1.4' ),
+));
