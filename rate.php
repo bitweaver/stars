@@ -1,9 +1,9 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_stars/rate.php,v 1.6 2010/02/08 21:27:25 wjames5 Exp $
+* $Header$
 * date created 2006/02/10
 * @author xing <xing@synapse.plus.com>
-* @version $Revision: 1.6 $ $Date: 2010/02/08 21:27:25 $
+* @version $Revision$
 * @package stars
 */
 
