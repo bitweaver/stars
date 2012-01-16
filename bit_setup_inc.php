@@ -29,6 +29,17 @@ if( $gBitSystem->isPackageActive( 'stars' ) ) {
 		'content_comment_tpl'       => 'bitpackage:stars/stars_inline_service.tpl',
 		'content_list_sort_tpl'     => 'bitpackage:stars/stars_list_sort_service.tpl',
 		'content_list_actions_tpl'  => 'bitpackage:stars/stars_list_actions_service.tpl',
+		'users_expunge_function'	=> 'contests_user_expunge',
 	));
+
+	// make sure all stars votes are removed
+	function stars_user_expunge( &$pObject ) {
+		if( is_a( $pObject, 'BitUser' ) && !empty( $pObject->mUserId ) ) {
+			$pObject->mDb->StartTrans();
+			$pObject->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."stars_history` WHERE user_id=?", array( $pObject->mUserId ) );
+			$pObject->mDb->CompleteTrans();
+		}
+	}
+	
 }
 ?>
