@@ -27,8 +27,8 @@ class LibertyStars extends LibertyBase {
 	 * @access public
 	 * @return void
 	 */
-	function LibertyStars( $pContentId=NULL ) {
-		LibertyBase::LibertyBase();
+	function __construct( $pContentId=NULL ) {
+		parent::__construct();
 		$this->mContentId = $pContentId;
 	}
 
