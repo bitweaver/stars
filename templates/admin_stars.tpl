@@ -48,7 +48,7 @@
 					{/forminput}
 				</div>
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="stars_preferences" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="stars_preferences" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}
@@ -78,7 +78,7 @@
 				</div>
    			
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="stars_preferences" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="stars_preferences" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}
