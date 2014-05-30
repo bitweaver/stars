@@ -6,49 +6,49 @@
 	<div class="body">
 		{legend legend="Rating Details"}
 			{if $starsDetails}
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Title"}
 					{forminput}
 					<a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$starsDetails.content_id}">{$starsDetails.title|escape}</a> <small>({$starsDetails.content_type.content_name})</small>
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Creator"}
 					{forminput}
 						{displayname real_name=$starsDetails.creator_real_name login=$starsDetails.creator_user}
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Last Editor"}
 					{forminput}
 						{displayname real_name=$starsDetails.modifier_real_name login=$starsDetails.modifier_user}
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Hits"}
 					{forminput}
 						{$starsDetails.hits}
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Rating"}
 					{forminput}
 						{$starsDetails.stars_rating}%
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Number of ratings"}
 					{forminput}
 						{$starsDetails.stars_update_count}
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Users who have rated"}
 					{forminput}
 						<ul class="data">
@@ -63,7 +63,7 @@
 			{elseif $userRatings}
 				{include file="bitpackage:stars/user_ratings.tpl"}
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Individual Ratings" for=""}
 					{forminput}
 						<ul class="data">
