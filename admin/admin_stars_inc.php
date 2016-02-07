@@ -5,7 +5,7 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 
 require_once( STARS_PKG_PATH.'LibertyStars.php' );
-$gBitSmarty->assign_by_ref( 'feedback', $feedback = array() );
+$gBitSmarty->assignByRef( 'feedback', $feedback = array() );
 
 $formStarsOptions = array(
 	"stars_used_in_display" => array(
