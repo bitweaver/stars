@@ -9,7 +9,7 @@ $registerHash = array(
 $gBitSystem->registerPackage( $registerHash );
 
 if( $gBitSystem->isPackageActive( 'stars' ) ) {
-	require_once( STARS_PKG_PATH.'LibertyStars.php' );
+	require_once( STARS_PKG_CLASS_PATH.'LibertyStars.php' );
 
 	// if we are using a text browser theme, make sure not to use ajax
 	if( $gBitThemes->getStyle()  == 'lynx' ) {
