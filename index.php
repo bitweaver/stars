@@ -1,5 +1,5 @@
 <?php
-require_once( "../kernel/setup_inc.php" );
+require_once( "../kernel/includes/setup_inc.php" );
 require_once( STARS_PKG_CLASS_PATH.'LibertyStars.php' );
 
 $gBitSystem->verifyPackage( 'stars' );
