@@ -3,7 +3,7 @@ global $gBitSystem, $gBitSmarty, $gBitThemes;
 
 $registerHash = array(
 	'package_name' => 'stars',
-	'package_path' => dirname( __FILE__ ).'/',
+	'package_path' => dirname( dirname( __FILE__ ) ).'/',
 	'service' => LIBERTY_SERVICE_RATING,
 );
 $gBitSystem->registerPackage( $registerHash );
